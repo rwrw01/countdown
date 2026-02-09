@@ -62,9 +62,8 @@ function tick() {
     updateDisplay(secondsLeft);
 
     // Update Towers (smooth progress)
-    const totalDuration = totalSeconds * 1000; // Use current timer duration
-    const elapsed = totalDuration - timeLeft;
-    const progress = elapsed / totalDuration;
+    const elapsed = duration - timeLeft;
+    const progress = elapsed / duration;
     updateTowers(progress);
 
     // Urgent Mode Check & Beep
@@ -93,8 +92,8 @@ function startCountdown() {
     }
 
     // Calculate end time based on totalSeconds
-    duration = initialTotalSeconds * 1000;
-    endTime = Date.now() + (totalSeconds * 1000);
+    duration = totalSeconds * 1000; // Use actual timer duration
+    endTime = Date.now() + duration;
     lastBeepSecond = -1;
 
     isRunning = true;
