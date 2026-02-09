@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown Challenge</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="tower-container tower-left">
+        <svg class="tower-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet">
+            <div class="tower-reveal-mask">
+                <svg class="tower-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet">
+                    <path
+                        d="M32.243,92.36C32.638,91.614,33.063,90.809,33.5,89.978L33.501,89.978C36.739,83.823,43.062,80,50,80S63.261,83.823,66.499,89.979L66.5,89.979C66.937,90.81,67.362,91.615,67.757,92.361C68.31,93.406,68.826,94.382,69.277,95.251L77.625,95.251L77.5,95C76.353,92.323,73.351,87.117,69.811,80L72.5,80L72.5,75L67.398,75C65.628,71.218,63.806,67.031,62.064,62.5L65,62.5L65,57.5L60.23,57.5C56.374,46.445,53.258,33.679,52.629,20L55,20L55,15.013L52.5,15.013L52.5,5L47.5,5L47.5,15.013L45,15.013L45,20L47.371,20C46.742,33.679,43.626,46.445,39.77,57.5L35,57.5L35,62.5L37.936,62.5C36.194,67.031,34.371,71.218,32.601,75L27.5,75L27.5,80L30.189,80C26.65,87.117,23.648,92.323,22.5,95L22.375,95.25L30.723,95.25C31.174,94.381,31.69,93.405,32.243,92.36ZM50,50.01C50.714,52.581,51.485,55.074,52.289,57.5L47.71,57.5C48.515,55.074,49.286,52.58,50,50.01ZM54.034,62.5C55.677,66.982,57.413,71.168,59.135,75L40.865,75C42.586,71.168,44.323,66.982,45.966,62.5L54.034,62.5Z"
+                        fill="#ffd700" stroke="none" />
+                </svg>
+            </div>
+    </div>
+
+    <div class="tower-container tower-right">
+        <div class="tower-reveal-mask">
+            <svg class="tower-svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet">
+                <path
+                    d="M32.243,92.36C32.638,91.614,33.063,90.809,33.5,89.978L33.501,89.978C36.739,83.823,43.062,80,50,80S63.261,83.823,66.499,89.979L66.5,89.979C66.937,90.81,67.362,91.615,67.757,92.361C68.31,93.406,68.826,94.382,69.277,95.251L77.625,95.251L77.5,95C76.353,92.323,73.351,87.117,69.811,80L72.5,80L72.5,75L67.398,75C65.628,71.218,63.806,67.031,62.064,62.5L65,62.5L65,57.5L60.23,57.5C56.374,46.445,53.258,33.679,52.629,20L55,20L55,15.013L52.5,15.013L52.5,5L47.5,5L47.5,15.013L45,15.013L45,20L47.371,20C46.742,33.679,43.626,46.445,39.77,57.5L35,57.5L35,62.5L37.936,62.5C36.194,67.031,34.371,71.218,32.601,75L27.5,75L27.5,80L30.189,80C26.65,87.117,23.648,92.323,22.5,95L22.375,95.25L30.723,95.25C31.174,94.381,31.69,93.405,32.243,92.36ZM50,50.01C50.714,52.581,51.485,55.074,52.289,57.5L47.71,57.5C48.515,55.074,49.286,52.58,50,50.01ZM54.034,62.5C55.677,66.982,57.413,71.168,59.135,75L40.865,75C42.586,71.168,44.323,66.982,45.966,62.5L54.034,62.5Z"
+                    fill="#ffd700" stroke="none" />
+            </svg>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Spaghetti Challenge</h1>
+
+        <div class="input-group" id="setup-panel">
+            <div class="input-wrapper">
+                <input type="number" id="minutes" placeholder="00" min="0" max="99" value="18">
+                <span class="label">Min</span>
+            </div>
+            <span class="separator">:</span>
+            <div class="input-wrapper">
+                <input type="number" id="seconds" placeholder="00" min="0" max="59" value="0">
+                <span class="label">Sec</span>
+            </div>
+        </div>
+
+        <div id="display-panel" class="hidden">
+            <div id="timer-display">18:00</div>
+        </div>
+
+        <div class="controls">
+            <button id="start-btn" class="btn primary">Start Bouwen</button>
+            <button id="reset-btn" class="btn secondary hidden">Reset</button>
+            <button id="stop-btn" class="btn danger hidden">Stop</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
