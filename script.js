@@ -62,8 +62,9 @@ function tick() {
     updateDisplay(secondsLeft);
 
     // Update Towers (smooth progress)
-    const elapsed = duration - timeLeft;
-    const progress = elapsed / duration;
+    const totalDuration = totalSeconds * 1000; // Use current timer duration
+    const elapsed = totalDuration - timeLeft;
+    const progress = elapsed / totalDuration;
     updateTowers(progress);
 
     // Urgent Mode Check & Beep
