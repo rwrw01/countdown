@@ -55,8 +55,7 @@ body {
     height: 100%;
     /* Start hidden by clipping from the top down */
     clip-path: inset(100% 0 0 0);
-    transition: clip-path 0.5s linear;
-    /* Smooth catch up */
+    /* No transition - JS controls frame-by-frame */
 }
 
 .tower-reveal-mask.ready {

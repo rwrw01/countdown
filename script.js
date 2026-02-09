@@ -8,7 +8,6 @@ const setupPanel = document.getElementById('setup-panel');
 const timerDisplay = document.getElementById('timer-display');
 const body = document.body;
 
-let countdownInterval;
 let totalSeconds = 0;
 let initialTotalSeconds = 0;
 let isRunning = false;
@@ -21,9 +20,12 @@ const towerMasks = document.querySelectorAll('.tower-reveal-mask');
 // Ensure they start hidden
 towerMasks.forEach(mask => {
     mask.style.clipPath = 'inset(100% 0 0 0)';
-    // Remove transition initially to prevent "closing" animation on reload if any
-    mask.style.transition = 'none';
 });
+
+let animationFrameId;
+let endTime;
+let duration;
+let lastBeepSecond = -1;
 
 function formatTime(totalSecs) {
     const mins = Math.floor(totalSecs / 60);
@@ -32,17 +34,51 @@ function formatTime(totalSecs) {
 }
 
 function updateDisplay(secs) {
-    timerDisplay.textContent = formatTime(secs);
+    if (secs < 0) secs = 0;
+    timerDisplay.textContent = formatTime(Math.ceil(secs));
 }
 
-function updateTowers(currentSecs) {
-    if (initialTotalSeconds <= 0) return;
-    const progress = 1 - (currentSecs / initialTotalSeconds); // 0 to 1
-    const percentage = Math.max(0, Math.min(100, (1 - progress) * 100)); // 100% to 0% inset
+function updateTowers(progress) {
+    // Progress is 0.0 to 1.0 (0% done to 100% done)
+    // Inset: 100% (hidden) -> 0% (visible)
+    const percentage = Math.max(0, Math.min(100, (1 - progress) * 100));
 
     towerMasks.forEach(mask => {
         mask.style.clipPath = `inset(${percentage}% 0 0 0)`;
     });
+}
+
+function tick() {
+    const now = Date.now();
+    const timeLeft = endTime - now;
+
+    if (timeLeft <= 0) {
+        finishTimer();
+        return;
+    }
+
+    // Update Display (integral seconds)
+    const secondsLeft = timeLeft / 1000;
+    updateDisplay(secondsLeft);
+
+    // Update Towers (smooth progress)
+    const elapsed = duration - timeLeft;
+    const progress = elapsed / duration;
+    updateTowers(progress);
+
+    // Urgent Mode Check & Beep
+    const currentSecond = Math.ceil(secondsLeft);
+    if (currentSecond <= 10 && currentSecond > 0) {
+        body.classList.add('urgent-mode');
+        if (currentSecond !== lastBeepSecond) {
+            playBeep();
+            lastBeepSecond = currentSecond;
+        }
+    } else {
+        body.classList.remove('urgent-mode');
+    }
+
+    animationFrameId = requestAnimationFrame(tick);
 }
 
 function startCountdown() {
@@ -55,6 +91,11 @@ function startCountdown() {
         audioContext.resume();
     }
 
+    // Calculate end time based on totalSeconds
+    duration = initialTotalSeconds * 1000;
+    endTime = Date.now() + (totalSeconds * 1000);
+    lastBeepSecond = -1;
+
     isRunning = true;
 
     // UI Updates
@@ -64,31 +105,8 @@ function startCountdown() {
     stopBtn.classList.remove('hidden');
     resetBtn.classList.add('hidden');
 
-    updateDisplay(totalSeconds);
-
-    // Animate towers
-    towerMasks.forEach(mask => {
-        // Re-enable transition for smooth animation
-        mask.style.transition = 'clip-path 1s linear';
-    });
-    updateTowers(totalSeconds); // Init pos
-
-    countdownInterval = setInterval(() => {
-        totalSeconds--;
-        updateDisplay(totalSeconds);
-        updateTowers(totalSeconds);
-
-        if (totalSeconds <= 10 && totalSeconds > 0) {
-            body.classList.add('urgent-mode');
-            playBeep();
-        } else {
-            body.classList.remove('urgent-mode');
-        }
-
-        if (totalSeconds <= 0) {
-            finishTimer();
-        }
-    }, 1000);
+    // Start animation loop
+    tick();
 }
 
 function initTimer() {
@@ -103,11 +121,14 @@ function initTimer() {
 }
 
 function stopTimer() {
-    clearInterval(countdownInterval);
+    cancelAnimationFrame(animationFrameId);
     isRunning = false;
-    towerMasks.forEach(mask => {
-        mask.style.transition = 'none';
-    });
+
+    // Capture remaining time for resume
+    const now = Date.now();
+    const remainingMs = endTime - now;
+    totalSeconds = Math.max(0, remainingMs / 1000);
+
     stopBtn.classList.add('hidden');
     startBtn.classList.remove('hidden');
     resetBtn.classList.remove('hidden');
@@ -115,16 +136,13 @@ function stopTimer() {
 }
 
 function resetTimer() {
-    clearInterval(countdownInterval);
+    cancelAnimationFrame(animationFrameId);
     isRunning = false;
     body.classList.remove('urgent-mode');
     body.classList.remove('finished');
 
     // Reset towers
-    towerMasks.forEach(mask => {
-        mask.style.transition = 'none';
-        mask.style.clipPath = 'inset(100% 0 0 0)'; // Full hidden
-    });
+    updateTowers(0); // 0 progress = hidden
 
     setupPanel.classList.remove('hidden');
     displayPanel.classList.add('hidden');
@@ -136,13 +154,10 @@ function resetTimer() {
 }
 
 function finishTimer() {
-    clearInterval(countdownInterval);
+    cancelAnimationFrame(animationFrameId);
     isRunning = false;
     updateDisplay(0);
-    // Ensure towers are fully drawn
-    towerMasks.forEach(mask => {
-        mask.style.clipPath = 'inset(0% 0 0 0)'; // Full reveal
-    });
+    updateTowers(1); // 1.0 progress = fully visible
 
     body.classList.remove('urgent-mode');
     body.classList.add('finished');
