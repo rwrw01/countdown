@@ -221,3 +221,94 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .container {
+        padding: 1.5rem;
+        width: 95%;
+    }
+
+    .input-wrapper input {
+        width: 100px;
+        height: 100px;
+        font-size: 3rem;
+        border-width: 3px;
+    }
+
+    .separator {
+        font-size: 3rem;
+        padding-bottom: 1rem;
+    }
+
+    #timer-display {
+        font-size: 18vw;
+        /* Slightly larger relative text on smaller vertical space */
+    }
+
+    .btn {
+        padding: 1rem 2rem;
+        font-size: 1.5rem;
+    }
+
+    .tower-container {
+        width: 30vw;
+        /* Reduce width slightly to give more room to center content */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+
+    .input-group {
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .input-wrapper input {
+        width: 70px;
+        height: 70px;
+        font-size: 2rem;
+        border-radius: 0.5rem;
+    }
+
+    .input-wrapper .label {
+        font-size: 0.8rem;
+    }
+
+    .separator {
+        font-size: 2rem;
+    }
+
+    #timer-display {
+        font-size: 20vw;
+        text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.25rem;
+    }
+
+    .tower-container {
+        width: 25vw;
+        /* Make towers narrower on very small screens */
+        opacity: 0.5;
+        /* Fade them out a bit more so text is readable */
+    }
+}
